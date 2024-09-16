@@ -1,3 +1,5 @@
+from machine import SoftI2C, Pin
+from yolobit import *
 import ustruct
 
 _REGISTER_TA = const(0x06)     # ambient
@@ -5,8 +7,8 @@ _REGISTER_TOBJ1 = const(0x07)  # object
 _REGISTER_TOBJ2 = const(0x08)  # object2
 
 class MLX90614:
-	def __init__(self, i2c, address=0x5A):
-		self.i2c = i2c
+	def __init__(self, address=0x5A):
+		self.i2c = SoftI2C(scl=Pin(pin19.pin), sda=Pin(pin20.pin), freq =100000)
 		self.address = address
 		_config1 = i2c.readfrom_mem(address, 0x25, 2)
 		_dz = ustruct.unpack('<H', _config1)[0] & (1<<6)
